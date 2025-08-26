@@ -38,4 +38,19 @@ def scrape_apple_releases():
                 elif "macOS" in text:
                     mac_live = text
 
-        #
+        data.append({
+            "timestamp": datetime.utcnow().isoformat(),
+            "ios_live": ios_live,
+            "ios_beta": ios_beta,
+            "mac_live": mac_live,
+            "mac_beta": mac_beta
+        })
+
+        df = pd.DataFrame(data)
+        df.to_csv("apple_releases.csv", index=False)
+        print("Scraping completed successfully.")
+
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
