@@ -1,7 +1,10 @@
+# os_scraper.py
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
+import os
 
 HEADERS = {'User-Agent': 'Mozilla/5.0'}
 
@@ -17,25 +20,20 @@ def scrape_apple_releases():
 
         ios_live = ""
         ios_beta = ""
-        ios_next_major = ""
-        ios_release_date = ""
-
         mac_live = ""
         mac_beta = ""
-        mac_next_major = ""
-        mac_release_date = ""
 
         for release in releases:
             text = release.get_text(strip=True)
             if "iOS" in text:
                 if "beta" in text.lower():
                     ios_beta = text
-                elif "iOS" in text:
+                else:
                     ios_live = text
-            if "macOS" in text:
+            elif "macOS" in text:
                 if "beta" in text.lower():
                     mac_beta = text
-                elif "macOS" in text:
+                else:
                     mac_live = text
 
         data.append({
@@ -46,11 +44,17 @@ def scrape_apple_releases():
             "mac_beta": mac_beta
         })
 
+        # ✅ Save to the correct file
+        output_path = "latest_os_versions.csv"
         df = pd.DataFrame(data)
-        df.to_csv("latest_os_versions.csv", index=False)
-        print("Scraping completed successfully.")
+        df.to_csv(output_path, index=False)
+        print(f"✅ Scraping complete. Saved to {output_path}")
 
     except requests.exceptions.RequestException as e:
-        print(f"Request failed: {e}")
+        print(f"❌ Request failed: {e}")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"❌ An error occurred: {e}")
+
+if __name__ == "__main__":
+    print("📂 Working dir:", os.getcwd())
+    scrape_apple_releases()
