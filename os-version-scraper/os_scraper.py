@@ -47,7 +47,7 @@ def scrape_apple_releases():
         })
 
         df = pd.DataFrame(data)
-        df.to_csv("apple_releases.csv", index=False)
+        df.to_csv("latest_os_versions.csv", index=False)
         print("Scraping completed successfully.")
 
     except requests.exceptions.RequestException as e:
