@@ -45,7 +45,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull origin main --rebase
           git add -f latest_os_versions.csv dummy_commit_test.txt
           git commit -m "🔄 Auto update CSV and dummy file" || echo "No changes to commit"
           git push
