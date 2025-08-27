@@ -1,3 +1,6 @@
+import pandas as pd
+from datetime import datetime
+
 def compile_os_updates():
     print("🧪 Using dummy data...")
     data = [{
@@ -12,3 +15,7 @@ def compile_os_updates():
     df["Scraped At"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
     df.to_csv("latest_os_versions.csv", index=False)
     print("✅ Dummy CSV written.")
+    print(df)
+
+if __name__ == "__main__":
+    compile_os_updates()
