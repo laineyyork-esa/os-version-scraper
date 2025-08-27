@@ -2,11 +2,11 @@ name: OS Version Scraper
 
 on:
   schedule:
-    - cron: "0 21 * * *"   # Daily at 21:00 UTC
-  workflow_dispatch:        # Manual trigger
+    - cron: "0 21 * * *"
+  workflow_dispatch:
 
 permissions:
-  contents: write           # Needed to commit/push
+  contents: write
 
 jobs:
   build:
@@ -35,10 +35,13 @@ jobs:
       - name: Print CSV contents (for debug)
         run: cat latest_os_versions.csv
 
+      - name: Pull latest changes
+        run: git pull origin main --rebase
+
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add latest_os_versions.csv
+          git add os-version-scraper/latest_os_versions.csv
           git commit -m "🔄 Update OS versions CSV" || echo "No changes to commit"
           git push
