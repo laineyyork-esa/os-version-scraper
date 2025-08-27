@@ -1,11 +1,2 @@
-Platform,Release,Date,Checked_On
-iPadOS,iPadOS,2025-08-25,2025-08-25 21:09:40 UTC
-macOS,macOS,2025-08-25,2025-08-25 21:09:40 UTC
-Windows,Windows 11 release information,2025-08-25,2025-08-25 21:09:40 UTC
-Windows,"How to get Windows 11, version 24H2",2025-08-25,2025-08-25 21:09:40 UTC
-Windows,Windows 11 release information,2025-08-25,2025-08-25 21:09:40 UTC
-Windows,"How to get Windows 11, version 23H2",2025-08-25,2025-08-25 21:09:40 UTC
-Windows,Windows 11 release information,2025-08-25,2025-08-25 21:09:40 UTC
-Windows,"How to get Windows 11, version 22H2",2025-08-25,2025-08-25 21:09:40 UTC
-Windows,Windows 10 release information,2025-08-25,2025-08-25 21:09:40 UTC
-Windows,"How to get Windows 10, version 22H2",2025-08-25,2025-08-25 21:09:40 UTC
+timestamp,ios_live,ios_beta,mac_live,mac_beta
+2025-08-27T00:23:56.248254,iOS,,macOS,
