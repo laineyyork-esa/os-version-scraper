@@ -32,8 +32,13 @@ jobs:
       - name: Run scraper
         run: python os_scraper.py
 
-      - name: Print CSV contents (for debug)
+      - name: Print CSV contents
         run: cat latest_os_versions.csv
+
+      - name: Show git status and diff
+        run: |
+          git status
+          git diff
 
       - name: Pull latest changes
         run: git pull origin main --rebase
