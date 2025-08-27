@@ -6,14 +6,14 @@ on:
   workflow_dispatch:        # allows manual runs from GitHub UI
 
 permissions:
-  contents: write           # 👈 allow workflow to push to repo
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: os-version-scraper   # 👈 run all steps inside this folder
+        working-directory: os-version-scraper
 
     steps:
       - name: Checkout repository
@@ -30,4 +30,18 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run scraper
-        run: python os
+        run: python os_scraper.py   # ✅ THIS MUST BE os_scraper.py
+
+      - name: Print CSV contents (for debug)
+        run: cat latest_os_versions.csv
+
+      - name: Commit and push results
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd ..
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add os-version-scraper/latest_os_versions.csv
+          git commit -m "Update OS versions [skip ci]" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
