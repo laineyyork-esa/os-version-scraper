@@ -2,18 +2,18 @@ name: OS Version Scraper
 
 on:
   schedule:
-    - cron: "0 21 * * *"   # runs daily at 21:00 UTC (7 AM AEST)
-  workflow_dispatch:        # allows manual runs from GitHub UI
+    - cron: "0 21 * * *"   # Daily at 21:00 UTC (7 AM AEST)
+  workflow_dispatch:        # Manual trigger from GitHub UI
 
 permissions:
-  contents: write
+  contents: write           # Needed to commit/push
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: os-version-scraper
+        working-directory: os-version-scraper   # 👈 your script is in this folder
 
     steps:
       - name: Checkout repository
@@ -30,18 +30,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run scraper
-        run: python os_scraper.py   # ✅ THIS MUST BE os_scraper.py
+        run: python os_scraper.py   # ✅ Correct file name
 
       - name: Print CSV contents (for debug)
-        run: cat latest_os_versions.csv
-
-      - name: Commit and push results
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd ..
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add os-version-scraper/latest_os_versions.csv
-          git commit -m "Update OS versions [skip ci]" || echo "No changes to commit"
-          git push origin HEAD:${GITHUB_REF#refs/heads/}
+        run
