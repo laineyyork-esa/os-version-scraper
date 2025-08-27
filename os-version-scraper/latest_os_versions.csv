@@ -1,2 +1,4 @@
-timestamp,ios_live,ios_beta,mac_live,mac_beta
-2025-08-27T00:23:56.248254,iOS,,macOS,
+Platform,Current Live OS,Available Beta Release,Available Beta Date,Major Release,Major Release Date
+macOS,,,,,
+iPadOS,,,,,
+Windows,24H2,,,,
