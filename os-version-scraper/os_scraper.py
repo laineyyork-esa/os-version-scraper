@@ -149,4 +149,29 @@ def scrape_windows_releases():
             "Available Beta Release": beta,
             "Available Beta Date": beta_date,
             "Major Release": major,
-            "Major Release
+            "Major Release Date": major_date
+        }]
+
+    except Exception as e:
+        print(f"❌ Windows scrape failed: {e}")
+        return []
+
+def compile_os_updates():
+    print("🔍 Scraping Apple...")
+    apple_data = scrape_apple_releases()
+
+    print("🔍 Scraping ChromeOS...")
+    chrome_data = fetch_chromeos_schedule()
+
+    print("🔍 Scraping Windows...")
+    windows_data = scrape_windows_releases()
+
+    all_data = apple_data + chrome_data + windows_data
+
+    df = pd.DataFrame(all_data)
+    df.to_csv("latest_os_versions.csv", index=False)
+    print("✅ All OS data saved to latest_os_versions.csv")
+    print(df)
+
+if __name__ == "__main__":
+    compile_os_updates()
