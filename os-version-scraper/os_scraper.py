@@ -26,13 +26,16 @@ def scrape_apple_releases():
         response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
 
-        items = soup.find_all("li")
+        # Updated to match new Apple site structure
+        items = soup.find_all("article", class_="news-item")
 
         for item in items:
-            title = item.get_text(strip=True)
+            title_element = item.find("h3")
+            title = title_element.get_text(strip=True) if title_element else ""
+
             date_element = item.find("time")
             release_date = ""
-            if date_element:
+            if date_element and date_element.has_attr("datetime"):
                 try:
                     parsed_date = datetime.strptime(date_element['datetime'], "%Y-%m-%d")
                     release_date = parsed_date.strftime("%d-%b-%y")
@@ -129,12 +132,11 @@ def scrape_windows_releases():
                 if "Insider" in text or "Preview" in text:
                     if not beta:
                         beta = text.replace("Build", "").strip()
-                        # Extract version like "24H2"
                         match = re.search(r"(2\dH2)", beta)
                         if match:
                             major = match.group(1)
-                        # No exact date, placeholder:
                         beta_date = datetime.utcnow().strftime("%d-%b-%y")
+                        major_date = beta_date
                 else:
                     if not current_live and "version" in text.lower():
                         match = re.search(r"version (\d+\w?\d?)", text, re.IGNORECASE)
@@ -147,29 +149,4 @@ def scrape_windows_releases():
             "Available Beta Release": beta,
             "Available Beta Date": beta_date,
             "Major Release": major,
-            "Major Release Date": major_date
-        }]
-
-    except Exception as e:
-        print(f"❌ Windows scrape failed: {e}")
-        return []
-
-def compile_os_updates():
-    print("🔍 Scraping Apple...")
-    apple_data = scrape_apple_releases()
-
-    print("🔍 Scraping ChromeOS...")
-    chrome_data = fetch_chromeos_schedule()
-
-    print("🔍 Scraping Windows...")
-    windows_data = scrape_windows_releases()
-
-    all_data = apple_data + chrome_data + windows_data
-
-    df = pd.DataFrame(all_data)
-    df.to_csv("latest_os_versions.csv", index=False)
-    print("✅ All OS data saved to latest_os_versions.csv")
-    print(df)
-
-if __name__ == "__main__":
-    compile_os_updates()
+            "Major Release
